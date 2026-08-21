@@ -8,6 +8,9 @@
 race/
   ko/index.html      한국어판
   en/index.html      영어판  (hreflang x-default 가 가리키는 곳)
+  ja/index.html      일본어판
+  404.html           없으면 없는 주소가 정상 페이지로 색인된다
+  sitemap.xml        언어판 셋. 루트는 통로라 뺀다
   styles.css
   src/               main · runner · gaits · camera · race · track
                      fx · scenery · labels · hud · entry
@@ -19,6 +22,10 @@ race/
 루트에 한 언어를 놓으면 그 주소가 그 언어의 canonical 이 되어, 나중에 언어를
 추가하려면 canonical 주소를 리다이렉트로 만들어야 한다 — 하면 안 되는 일이다.
 `mojibake` 가 한국어를 루트에 둔 상태라 그걸 따라하지 않았다.
+
+배포는 저장소 루트의 `wrangler.jsonc` 와 `worker/index.js` 가 맡는다 (Workers + Static Assets).
+`race/` 안이 그대로 사이트이고 빌드 단계는 없다 — `npx wrangler deploy` 하나면 끝난다.
+**`directory` 를 `.` 로 바꾸지 말 것.** 저장소 루트를 올리면 README·CLAUDE.md 가 같이 공개된다.
 
 `prelaps.com/race/` 로 오는 요청은 Worker 가 `Accept-Language` 로 302 한다.
 `301` 이면 브라우저가 영구 캐시해 방문자가 언어를 되돌릴 수 없고,

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>かけっこルーレット — ランチ・罰ゲーム・順番決め | prelaps</title>
+<meta name="description" content="名前を入れるとキャラクターが走って順位を決めます。ランチ、罰ゲーム、発表順をルーレットの代わりにかけっこで。重みも設定でき、インストール不要です。">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     .pages.dev 나 .workers.dev 를 가리키면 중복 색인이 된다. -->
+<link rel="canonical" href="https://prelaps.com/race/ja/">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prelaps.com/race/ja/">
+<meta property="og:title" content="かけっこルーレット">
+<meta property="og:description" content="名前を入れるとキャラクターが走って順位を決めます。ランチ、罰ゲーム、発表順をルーレットの代わりにかけっこで。重みも設定でき、インストール不要です。">
+<meta property="og:locale" content="ja_JP">
+
+<!-- 모듈을 미리 받게 한다. 이게 없으면 브라우저가 사슬을 한 칸씩 따라가느라
+     제일 큰 파일(three.core.min.js, 385KB)이 왕복 두 번 뒤에야 받기 시작한다:
+       HTML → main.js → three.module.min.js → three.core.min.js
+     미리 알려주면 셋이 동시에 내려온다. -->
+<link rel="modulepreload" href="../src/main.js">
+<link rel="modulepreload" href="../vendor/three.module.min.js">
+<link rel="modulepreload" href="../vendor/three.core.min.js">
+
+<!-- 구조화 데이터. 도구 페이지는 본문이 짧아서, 이게 「무엇을 하는 물건인지」를
+     검색엔진에 직접 알려주는 몫이 크다. 값은 화면에 있는 것과 같아야 한다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "かけっこルーレット",
+  "url": "https://prelaps.com/race/ja/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript and WebGL",
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "description": "名前を入れるとキャラクターが走って順位を決めます。ランチ、罰ゲーム、発表順をルーレットの代わりにかけっこで。重みも設定でき、インストール不要です。"
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <a class="home" href="/ja/">prelaps</a>
+    <h1>かけっこルーレット</h1>
+    <p class="tagline">トラックを最大 12 人が走ります。重みはブースターの数として入ります。</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/" hreflang="ko">한국어</a>
+    <a href="../en/" hreflang="en">English</a>
+    <a href="../ja/" aria-current="true" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<div class="bar">
+  <button id="start" data-running="レース中">スタート</button>
+  <button id="again">やり直す</button>
+  <button id="shuffle">走り方をシャッフル</button>
+  <button id="lanes">レーンをシャッフル</button>
+  <button id="names" class="on">名前</button>
+  <span style="width:8px"></span>
+  <button class="sp on sm" data-sp="1">1x</button>
+  <button class="sp sm" data-sp="2">2x</button>
+  <button class="sp sm" data-sp="4">4x</button>
+  <span id="status"></span>
+</div>
+
+<div class="layout">
+  <div id="stage"><span class="loading">読み込み中…</span></div>
+
+  <div class="side">
+    <div class="panel">
+      <div class="lap" id="lapRow" data-word="周">
+        <span class="lb">周回</span>
+        <input id="lapn" class="lapn" type="number" min="1" max="5" step="1" value="1">
+        <span id="dur" class="dur" data-unit="秒"></span>
+      </div>
+      <div class="hdr"><h2>参加者</h2><span class="bh">ブースター</span></div>
+      <div id="entries" data-names="はると,ゆい,そうた,あおい" data-ph="名前" data-fallback="ランナー"></div>
+      <div class="bar" style="margin:9px 0 0;gap:6px">
+        <button id="add" class="sm">追加</button>
+        <span id="count" class="cnt"></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>カメラ</h2>
+      <div class="bar" style="margin:0;gap:5px">
+        <button id="auto" class="sm on">自動</button>
+        <button class="vw sm" data-view="side">横から</button>
+        <button class="vw sm" data-view="top">上から</button>
+        <button class="vw sm" data-view="stadium">全体</button>
+      </div>
+      <p style="color:#6b7383;font-size:11.5px;margin:9px 0 0">
+        自動は区間ごとに視点を切り替えます。ドラッグで角度、ホイールや二本指で寄せ引き —
+        自動のときは手を離して 3 秒で戻り、視点を自分で選ぶと自動が切れて角度がそのまま保たれます。
+        ダブルクリックで選んだ視点に戻ります。
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- 설명은 정적 HTML 로 둔다. 화면을 자바스크립트가 그리더라도
+     읽을 거리는 처음부터 문서에 있어야 색인된다. -->
+<section class="about">
+  <h2>レーンによって有利不利はある？</h2>
+  <p>
+    実際の陸上トラックは外側のレーンほど長いので、スタート位置をずらして走ります。
+    これは代わりに計算のほうで補正します — 位置は「自分のレーンをどこまで進んだか」で測るので、
+    どのレーンが速い・遅いということがありません。
+    勝敗を決めるのは設定した重みだけです。
+  </p>
+  <p>
+    飲み会で誰が払うか、発表の順番をどうするか。
+    「アプリが選びました」より、みんなで見届けたほうが納得しやすいものです。
+  </p>
+  <p>
+    ランチ選び、コーヒーのおごり、掃除当番、発表順 —
+    ルーレットやあみだくじで決めていたことをそのまま置き換えられます。
+    名前を入れるだけで、毎回あらためて抽選します。
+  </p>
+
+  <h2>重みはどう効くのか</h2>
+  <p>
+    重み 3 の人は重み 1 の人より<strong>ちょうど 3 倍</strong>よく勝ちます。
+    勝率はその人の重みを全員の合計で割った値そのものです。
+    8 人に 3・1・2・1・2・1・1・1 と与えれば、最初の人が 25%、重み 1 の人が 8.3% です。
+  </p>
+  <p>
+    ではレースは何かというと、その結果を<strong>見せる方法</strong>です。
+    先に公平に順位を抽選し、その順位どおりに入るようレースを演出します。
+    ゴールの間隔は 0.2〜0.6 秒なので、画面では写真判定が要るほど競り合って見えます。
+    1 レースで先頭が 10 回以上入れ替わり、3 回に 1 回は残り 3 秒でまだ決まっていません。
+  </p>
+  <p>
+    ブースターは重みを目に見えるようにする仕掛けです。重みが 3 ならブースターも 3 個で、
+    ゴールまでに一つ残らず使い切ります。点灯中は実際に 1.4 倍速くなり、
+    1 回あたり平均 1.5 人抜きます。ただしブースターが勝敗を作るわけではありません —
+    勝敗は抽選が決め、ブースターはその過程を描く筆です。
+  </p>
+
+  <h2>走り方と見た目</h2>
+  <p>
+    ランナーごとに走り方が違います。ふつうに走る人もいれば、
+    這う人、逆立ちで歩く人、側転する人、いっそ転がっていく人もいます。
+    頭の形と体型は最初から重ならないように配られるので、一度覚えればそのままです。
+    「走り方をシャッフル」は走り方だけ、「レーンをシャッフル」は並び位置だけを引き直します。
+  </p>
+  <ul>
+    <li>走り方 8 種類 — 側転、全力疾走、四つん這い、逆立ち、ふわふわ、行進、すべり、転がり</li>
+    <li>名前とブースターの数を直接入力。2〜12 人、レーンは人数に合わせて増減します</li>
+    <li>頭の形 8 種類と体型 4 種類が重ならないように分けられます</li>
+    <li>名前タグをキャラクターの上に出したり消したりできます</li>
+    <li>カメラは自動演出が区間ごとに視点を変え、横・上・全体を自分で選ぶこともできます</li>
+  </ul>
+
+  <h2>データはどこに保存されるのか</h2>
+  <p>
+    どこにも保存されません。計算はすべてブラウザの中で行われ、
+    入力した名前も結果もサーバーに送られません。再読み込みすれば消えます。
+  </p>
+</section>
+
+<footer>
+  <a href="/ja/">prelaps ホーム</a> ·
+  <a href="/ja/privacy#race">プライバシーポリシー</a> ·
+  <a href="/ja/terms">利用規約</a> ·
+  <a href="/ja/contact">お問い合わせ</a>
+</footer>
+
+</div>
+
+<noscript>
+  <p style="color:#e0834a">このツールは 3D 画面を描画するため JavaScript が必要です。</p>
+</noscript>
+
+<script type="module" src="../src/main.js"></script>
+</body>
+</html>

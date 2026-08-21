@@ -16,7 +16,7 @@ const CANONICAL_HOST = 'prelaps.com';
 const PREFIX = '/race';
 
 /** 실제로 있는 언어판. 순서가 곧 우선순위다. */
-const LANGS = ['ko', 'en'];
+const LANGS = ['ko', 'en', 'ja'];
 
 /**
  * 언어를 특정하지 못했을 때 보낼 곳.

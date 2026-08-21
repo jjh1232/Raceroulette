@@ -7,6 +7,7 @@
     <loc>https://prelaps.com/race/ko/</loc>
     <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
     <lastmod>2026-08-22</lastmod>
   </url>
@@ -14,6 +15,15 @@
     <loc>https://prelaps.com/race/en/</loc>
     <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
+    <lastmod>2026-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
     <lastmod>2026-08-22</lastmod>
   </url>
