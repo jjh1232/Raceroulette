@@ -19,15 +19,22 @@ export function makeHud(stage, onAgain) {
   board.className = 'hud-board';
   hud.appendChild(board);
 
+  // 바퀴 표시. 한 바퀴짜리 판에서는 「1 / 1」이 아무 정보도 아니라 아예 안 띄운다.
+  const laps = document.createElement('div');
+  laps.className = 'laps';
+  laps.hidden = true;
+
   const result = document.createElement('div');
   result.className = 'result';
   result.hidden = true;
 
   stage.appendChild(hud);
+  stage.appendChild(laps);
   stage.appendChild(result);
 
   let rows = [];
   let shown = false;
+  let lapText = null;
 
   function build(cands) {
     board.textContent = '';
@@ -47,6 +54,20 @@ export function makeHud(stage, onAgain) {
       };
     });
     board.style.height = rows.length * ROW + 'px';
+  }
+
+  /**
+   * 바퀴 표시를 갱신한다. **꼴찌 기준이다** — 선두가 2바퀴째에 들어섰다고 「2/2」라고 쓰면
+   * 아직 1바퀴째인 사람이 있는데 마지막 바퀴라고 말하는 셈이 된다.
+   * 꼴찌 기준이면 「모두가 최소 이 바퀴에는 들어와 있다」가 된다.
+   */
+  function setLaps(now, total) {
+    if (total <= 1) { laps.hidden = true; return; }
+    const t = now + ' / ' + total;
+    if (t === lapText) return;          // 매 프레임 DOM 을 건드리지 않는다
+    lapText = t;
+    laps.innerHTML = '<b>' + now + '</b><span class="sep">/</span>' + total;
+    laps.hidden = false;
   }
 
   // 매 프레임 불린다. 바뀐 것만 쓴다 — 안 그러면 여기가 제일 무거운 코드가 된다.
@@ -112,5 +133,5 @@ export function makeHud(stage, onAgain) {
     result.classList.remove('in');
   }
 
-  return { build, update, showResult, hideResult };
+  return { build, update, setLaps, showResult, hideResult };
 }

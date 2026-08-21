@@ -84,7 +84,7 @@ function shuffleGaits() {
 function shuffleLanes() {
   const l = shuffled(cands.map((_, i) => i));
   cands.forEach((c, i) => (c.lane = l[i]));
-  placeHazards();          // 웅덩이는 레인 위에 있으므로 같이 옮겨야 한다
+  placeHazards();          // 껍질은 레인 위에 있으므로 같이 옮겨야 한다
 }
 
 // ── 무대 ────────────────────────────────────────────
@@ -283,44 +283,75 @@ const peelStrip = new THREE.InstancedMesh(
   new THREE.MeshLambertMaterial({ color: M.peel }), HAZ_MAX * STRIPS);
 for (const m of [peelCore, peelStrip]) { m.frustumCulled = false; scene.add(m); }
 
-function placeHazards() {
+// 껍질은 「그 주자가 걸리는 순간 있을 자리」에 깔린다. 바퀴가 여러 개면 같은 자리를
+// 여러 번 지나가는데 걸리는 건 한 번뿐이라, 나머지 통과는 「밟았는데 아무 일도 없는」
+// 장면이 된다. 실측으로 2바퀴에서 껍질당 1번, 3바퀴에서 2번이었다.
+//
+// 그래서 **걸리는 그 바퀴에만 보이게** 한다. 직전 통과(대략 한 바퀴 전)보다 뒤에 나타나고,
+// 미끄러짐이 끝나면 사라진다. 한 바퀴의 0.7배를 여유로 잡은 건 속도가 ±36% 흔들리기 때문이다.
+const HAZ_LEAD = 0.7;
+let hazList = [];
+
+function hazMatrix(o, h, k) {
+  if (k < 0) {                                   // 가운데 꼭지
+    o.position.set(h.x, 8, h.z);
+    o.rotation.set(0, h.spin, 0);
+    o.scale.set(1, 0.55, 1);
+  } else {                                       // 벌어진 껍질 세 장
+    const a = h.spin + k * (6.283 / STRIPS);
+    o.position.set(h.x + Math.cos(a) * PEEL_R * 0.5, 11.5, h.z + Math.sin(a) * PEEL_R * 0.5);
+    o.rotation.set(Math.PI / 2 - 0.25, 0, 0);
+    o.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), -a + Math.PI / 2);
+    o.scale.set(1, 1, 0.45);
+  }
+  o.updateMatrix();
+  return o.matrix;
+}
+
+const HAZ_HIDE = new THREE.Matrix4().makeScale(0, 0, 0);
+
+function drawHazard(i, on) {
+  const h = hazList[i];
   const o = new THREE.Object3D();
-  const list = race.hazards();
-  const hide = () => { o.scale.setScalar(0); o.updateMatrix(); return o.matrix; };
+  peelCore.setMatrixAt(i, on ? hazMatrix(o, h, -1) : HAZ_HIDE);
+  for (let k = 0; k < STRIPS; k++) {
+    peelStrip.setMatrixAt(i * STRIPS + k, on ? hazMatrix(o, h, k) : HAZ_HIDE);
+  }
+}
+
+function placeHazards() {
+  hazList = race.hazards().slice(0, HAZ_MAX).map((h) => {
+    // **미끄러짐이 시작되는 바로 그 지점**에 깐다. 25% 지점에 깔았더니 주자가 껍질에
+    // 닿기 181 앞에서 이미 미끄러지기 시작해 순서가 거꾸로 보였다.
+    const p = T.place(h.r.c.lane, race.progressAt(h.r, h.t) * laps);
+    const lap = h.r.endT / 1000 / laps;
+    return { h, x: p.x, z: p.z, spin: (h.t * 7) % 6.283,
+             from: h.t - lap * HAZ_LEAD, to: h.t + h.d, on: null };
+  });
   for (let i = 0; i < HAZ_MAX; i++) {
-    const h = list[i];
-    if (!h) {
-      peelCore.setMatrixAt(i, hide());
-      for (let k = 0; k < STRIPS; k++) peelStrip.setMatrixAt(i * STRIPS + k, hide());
-      continue;
-    }
-    // **미끄러짐이 시작되는 바로 그 지점**에 깐다. 처음엔 조금 뒤(25% 지점)에 깔았는데,
-    // 그러면 주자가 껍질에 닿기 181 앞에서 이미 미끄러지기 시작해 순서가 거꾸로 보인다.
-    const f = race.progressAt(h.r, h.t) * laps;
-    const p = T.place(h.r.c.lane, f);
-    const spin = (h.t * 7) % 6.283;                 // 껍질마다 놓인 방향이 다르게
-
-    o.position.set(p.x, 8, p.z);
-    o.rotation.set(0, spin, 0);
-    o.scale.set(1, 0.55, 1);                        // 눌러 놓아야 바닥에 붙어 보인다
-    o.updateMatrix();
-    peelCore.setMatrixAt(i, o.matrix);
-
-    for (let k = 0; k < STRIPS; k++) {
-      const a = spin + k * (6.283 / STRIPS);
-      // y 11.5 는 눕힌 원뿔의 아랫면이 트랙 표면(0.5) 바로 위에 오는 값이다.
-      // 6 으로 뒀더니 4.2 만큼 파묻혀 있었다.
-      o.position.set(p.x + Math.cos(a) * PEEL_R * 0.5, 11.5, p.z + Math.sin(a) * PEEL_R * 0.5);
-      // 원뿔을 눕혀서 바깥으로 뻗게 한다. 끝을 살짝 들어야 말린 껍질처럼 보인다.
-      o.rotation.set(Math.PI / 2 - 0.25, 0, 0);
-      o.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), -a + Math.PI / 2);
-      o.scale.set(1, 1, 0.45);
-      o.updateMatrix();
-      peelStrip.setMatrixAt(i * STRIPS + k, o.matrix);
-    }
+    if (i < hazList.length) drawHazard(i, false);
+    else { peelCore.setMatrixAt(i, HAZ_HIDE);
+           for (let k = 0; k < STRIPS; k++) peelStrip.setMatrixAt(i * STRIPS + k, HAZ_HIDE); }
   }
   peelCore.instanceMatrix.needsUpdate = true;
   peelStrip.instanceMatrix.needsUpdate = true;
+}
+
+// 매 프레임 불리지만 보임/안 보임이 뒤집힐 때만 행렬을 쓴다. 껍질은 최대 24개다.
+function updateHazards(now) {
+  let dirty = false;
+  for (let i = 0; i < hazList.length; i++) {
+    const h = hazList[i];
+    const on = now >= h.from && now < h.to;
+    if (on === h.on) continue;
+    h.on = on;
+    drawHazard(i, on);
+    dirty = true;
+  }
+  if (dirty) {
+    peelCore.instanceMatrix.needsUpdate = true;
+    peelStrip.instanceMatrix.needsUpdate = true;
+  }
 }
 
 // ── 화면 갱신 ────────────────────────────────────────
@@ -392,6 +423,7 @@ function frame(now) {
     over: race.finished.length > 0,
   });
 
+  updateHazards(race.t / 1000);
   fx.update(dt, fxList);
   camera.update(dt);
   labels.update(camera.cam, fxList, opt.h);
@@ -403,9 +435,11 @@ function frame(now) {
   renderer.render(scene, camera.cam);
   // 매 프레임 부르지만 바뀐 값만 DOM 에 쓴다 (hud.js 참고).
   hud.update(race);
+  // 바퀴는 **꼴찌 기준**이다 (hud.setLaps 주석 참고). order 는 진행률 내림차순이라 끝이 꼴찌다.
+  const lastF = order[order.length - 1].pos / TRACK;
+  hud.setLaps(Math.min(laps, Math.floor(lastF * laps) + 1), laps);
   // 결과창과 같은 말을 쓴다. 트로피 이모지는 기기마다 모양이 달라 안 쓰기로 했다.
   if (race.finished.length) setStatus('WINNER  ' + race.finished[0].c.name);
-  else if (running && laps > 1) setStatus(Math.min(laps, Math.floor(f1 * laps) + 1) + ' / ' + laps + LAP_WORD);
   if (race.over) { hud.showResult(race); setRunning(false); }
   requestAnimationFrame(frame);
 }
@@ -434,10 +468,9 @@ function setRunning(v) {
   if (laneBtn) laneBtn.disabled = v;
 }
 const startBtn = document.getElementById('start');
-const LAP_WORD = document.getElementById('lapRow')?.dataset.word || ' laps';
 document.getElementById('start').onclick = e => {
   setRunning(true); e.target.disabled = true;
-  setStatus(laps > 1 ? '1 / ' + laps + LAP_WORD : startBtn.dataset.running || '');
+  setStatus(startBtn.dataset.running || '');   // 바퀴 수는 무대 오른쪽 위에 따로 뜬다
 };
 
 // 바퀴 수. 바꾸면 판 길이가 달라지므로 레이스를 다시 뽑는다.

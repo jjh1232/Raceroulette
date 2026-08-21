@@ -1,0 +1,10 @@
+{
+  "name": "race",
+  "private": true,
+  "description": "달리기 룰렛 — prelaps.com/race/. 빌드 단계 없음. race/ 안이 그대로 사이트다.",
+  "scripts": {
+    "check:links": "node test/links.js",
+    "deploy": "npm run check:links && npx wrangler deploy",
+    "serve": "npx --yes serve race"
+  }
+}
