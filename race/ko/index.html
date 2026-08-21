@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>달리기 룰렛 — 점심·벌칙·순서 정하기 | prelaps</title>
+<meta name="description" content="이름을 넣으면 캐릭터들이 달려서 순위를 정합니다. 점심 메뉴, 벌칙, 발표 순서를 돌림판 대신 달리기로. 가중치도 줄 수 있고 설치 없이 바로 씁니다.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     .pages.dev 나 .workers.dev 를 가리키면 중복 색인이 된다. -->
+<link rel="canonical" href="https://prelaps.com/race/ko/">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prelaps.com/race/ko/">
+<meta property="og:title" content="달리기 룰렛">
+<meta property="og:description" content="이름을 넣으면 캐릭터들이 달려서 순위를 정합니다. 점심 메뉴, 벌칙, 발표 순서를 돌림판 대신 달리기로. 가중치도 줄 수 있고 설치 없이 바로 씁니다.">
+<meta property="og:locale" content="ko_KR">
+
+<!-- 모듈을 미리 받게 한다. 이게 없으면 브라우저가 사슬을 한 칸씩 따라가느라
+     제일 큰 파일(three.core.min.js, 385KB)이 왕복 두 번 뒤에야 받기 시작한다:
+       HTML → main.js → three.module.min.js → three.core.min.js
+     미리 알려주면 셋이 동시에 내려온다. -->
+<link rel="modulepreload" href="../src/main.js">
+<link rel="modulepreload" href="../vendor/three.module.min.js">
+<link rel="modulepreload" href="../vendor/three.core.min.js">
+
+<!-- 구조화 데이터. 도구 페이지는 본문이 짧아서, 이게 「무엇을 하는 물건인지」를
+     검색엔진에 직접 알려주는 몫이 크다. 값은 화면에 있는 것과 같아야 한다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "달리기 룰렛",
+  "url": "https://prelaps.com/race/ko/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript and WebGL",
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "description": "이름을 넣으면 캐릭터들이 달려서 순위를 정합니다. 점심 메뉴, 벌칙, 발표 순서를 돌림판 대신 달리기로. 가중치도 줄 수 있고 설치 없이 바로 씁니다."
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <a class="home" href="/ko/">prelaps</a>
+    <h1>달리기 룰렛</h1>
+    <p class="tagline">트랙에서 최대 열두 명이 달립니다. 가중치는 부스터 개수로 들어갑니다.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/" aria-current="true" hreflang="ko">한국어</a>
+    <a href="../en/" hreflang="en">English</a>
+  </nav>
+</header>
+
+<div class="bar">
+  <button id="start" data-running="달리는 중">시작</button>
+  <button id="again">다시</button>
+  <button id="shuffle">자세 섞기</button>
+  <button id="lanes">라인 섞기</button>
+  <button id="names" class="on">이름표시</button>
+  <span style="width:8px"></span>
+  <button class="sp on sm" data-sp="1">1x</button>
+  <button class="sp sm" data-sp="2">2x</button>
+  <button class="sp sm" data-sp="4">4x</button>
+  <span id="status"></span>
+</div>
+
+<div class="layout">
+  <div id="stage"><span class="loading">불러오는 중…</span></div>
+
+  <div class="side">
+    <div class="panel">
+      <div class="lap" id="lapRow" data-word="바퀴">
+        <span class="lb">바퀴</span>
+        <input id="lapn" class="lapn" type="number" min="1" max="5" step="1" value="1">
+        <span id="dur" class="dur" data-unit="초"></span>
+      </div>
+      <div class="hdr"><h2>참가자</h2><span class="bh">부스터</span></div>
+      <div id="entries" data-names="철수,영희,민수,지연" data-ph="이름" data-fallback="주자"></div>
+      <div class="bar" style="margin:9px 0 0;gap:6px">
+        <button id="add" class="sm">추가</button>
+        <span id="count" class="cnt"></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>카메라</h2>
+      <div class="bar" style="margin:0;gap:5px">
+        <button id="auto" class="sm on">자동</button>
+        <button class="vw sm" data-view="side">옆에서</button>
+        <button class="vw sm" data-view="top">위에서</button>
+        <button class="vw sm" data-view="stadium">전체</button>
+      </div>
+      <p style="color:#6b7383;font-size:11.5px;margin:9px 0 0">
+        자동은 구간마다 시점을 바꿔 줍니다. 끌면 각도, 휠·두 손가락은 당기고 밀기 —
+        자동일 때는 손을 떼고 3초 지나면 돌아오고, 시점을 직접 고르면 자동이 꺼져서
+        맞춰 둔 각도가 그대로 유지됩니다. 두 번 누르면 고른 시점으로 되돌아갑니다.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 설명은 정적 HTML 로 둔다. 화면을 자바스크립트가 그리더라도
+     읽을 거리는 처음부터 문서에 있어야 색인된다. -->
+<section class="about">
+  <h2>라인길이별 형평성</h2>
+  <p>
+    실제 달리기는 라인마다 출발선이 다릅니다. 허나 이달리기룰렛은 내부적인 계산과 보정을 작용합니다
+    실제로 결과는 가중치에따라 확률이 다를분 균등하게 랜덤으로 승리자가 결정됩니다.
+  </p>
+  <p>
+    회식 자리에서 누가 계산할지, 발표 순서를 어떻게 할지 정할 때
+    "그냥 랜덤으로 뽑았어" 보다 다 같이 지켜본 쪽이 덜 억울합니다.
+  </p>
+  <p>
+    점심 메뉴 고르기, 식사 당번, 커피 내기, 벌칙 정하기, 청소 순번, 발표 순서 —
+    돌림판이나 사다리타기로 정하던 것들을 그대로 대신할 수 있습니다.
+    이름만 넣으면 되고, 결과는 매번 새로 뽑습니다.
+  </p>
+
+  <h2>가중치는 어떻게 들어가나</h2>
+  <p>
+    가중치 3 을 준 사람은 <strong>정확히 세 배</strong> 자주 이깁니다.
+    우승 확률은 그 사람의 가중치를 전체 합으로 나눈 값 그대로입니다.
+    여덟 명에게 3·1·2·1·2·1·1·1 을 주면 첫 번째 사람이 25%, 가중치 1 인 사람이 8.3% 입니다.
+  </p>
+  <p>
+    그러면 달리기는 무엇이냐 하면, 그 결과를 <strong>보여주는 방식</strong>입니다.
+    순위를 먼저 공정하게 뽑고, 그 순위대로 들어오도록 레이스를 연출합니다.
+    도착 간격이 0.2~0.6초라 화면에서는 사진 판독을 해야 할 만큼 붙어 들어옵니다.
+    한 판에 선두가 열 번 넘게 바뀌고, 셋 중 하나는 마지막 3초 안에 뒤집힙니다.
+  </p>
+  <p>
+    부스터는 가중치를 눈에 보이게 하는 장치입니다. 가중치가 셋이면 부스터도 셋이고,
+    결승선을 넘기 전에 하나도 남기지 않고 전부 씁니다. 켜지면 실제로 1.4 배 빨라져서
+    한 번에 평균 한 계단 반을 올라옵니다. 다만 부스터가 승부를 만들지는 않습니다 —
+    승부는 추첨이 정하고, 부스터는 그 과정을 그리는 붓입니다.
+  </p>
+
+  <h2>주법과 생김새</h2>
+  <p>
+    주자마다 뛰는 자세가 다릅니다. 평범하게 달리는 사람도 있고,
+    기어가거나, 물구나무로 걷거나, 옆으로 돌거나, 아예 굴러가는 사람도 있습니다.
+    머리 모양과 체형은 처음부터 겹치지 않게 섞여 있어 한 번 익히면 그대로입니다. 「자세 섞기」는 달리는 자세만, 「레인 섞기」는 서는 자리만 다시 뽑습니다.
+  </p>
+  <ul>
+    <li>달리는 자세 여덟 가지 — 옆으로돌기, 전력질주, 기어가기, 물구나무서기, 둥둥, 행진, 미끄럼, 구르기</li>
+    <li>이름과 부스터 개수를 직접 넣습니다. 2~12명, 레인이 인원에 맞춰 늘고 줍니다</li>
+    <li>머리 모양 여덟 가지와 체형 네 가지가 겹치지 않게 나뉩니다</li>
+    <li>이름표를 캐릭터 위에 띄우거나 끌 수 있습니다</li>
+    <li>카메라는 자동 연출이 구간마다 시점을 바꿔 주고, 옆·위·전체를 직접 고르거나 마우스로 돌릴 수 있습니다</li>
+  </ul>
+
+  <h2>어디에 저장되나</h2>
+  <p>
+    아무 데도 저장되지 않습니다. 계산은 전부 브라우저 안에서 이뤄지고
+    입력한 이름이나 결과가 서버로 올라가지 않습니다. 새로 고치면 사라집니다.
+  </p>
+</section>
+
+<footer>
+  <a href="/ko/">prelaps 홈</a> ·
+  <a href="/ko/privacy#race">개인정보처리방침</a> ·
+  <a href="/ko/terms">이용약관</a> ·
+  <a href="/ko/contact">문의</a>
+</footer>
+
+</div>
+
+<noscript>
+  <p style="color:#e0834a">이 도구는 3D 화면을 그리기 때문에 자바스크립트가 필요합니다.</p>
+</noscript>
+
+<script type="module" src="../src/main.js"></script>
+</body>
+</html>

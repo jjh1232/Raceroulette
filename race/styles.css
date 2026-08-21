@@ -1,0 +1,180 @@
+/* 도구는 prelaps.com/race/<언어>/ 아래에 있다. 절대 경로를 쓰면 도메인 루트 기준으로
+   풀려서 전부 깨진다 — 이 파일 안의 모든 참조도 상대 경로여야 한다. */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; padding: 20px 20px 40px;
+  background: #14161a; color: #e6e8ec;
+  font: 15px/1.65 system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+}
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+/* 언어 전환은 오른쪽 맨 위. 제목과 같은 줄에 두되 위쪽에 붙인다. */
+/* 제목 위 구석의 허브 링크. 도구가 prelaps 안에 있다는 걸 알리는 유일한 표시이고,
+   검색엔진에게도 이 페이지가 어디 속하는지 알려주는 내부 링크다. */
+.home {
+  display: inline-block;
+  color: #6b7383; text-decoration: none;
+  font-size: 12px; letter-spacing: .06em; text-transform: lowercase;
+  margin-bottom: 2px;
+}
+.home:hover { color: #8b93a1; }
+
+header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; margin-bottom: 16px;
+}
+h1 { font-size: 21px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.tagline { color: #8b93a1; font-size: 14px; margin: 0; }
+.langs { display: flex; gap: 12px; font-size: 13px; flex: none; padding-top: 3px; }
+.langs a { color: #8b93a1; text-decoration: none; }
+.langs a[aria-current="true"] { color: #e6e8ec; font-weight: 600; }
+.langs a:hover { color: #e6e8ec; }
+
+.bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+button {
+  background: #232730; color: #e6e8ec; border: 1px solid #363c48;
+  border-radius: 6px; padding: 7px 14px; font: inherit; cursor: pointer;
+}
+button:hover { background: #2c313c; }
+button.on { background: #3a5a8a; border-color: #4a72ab; }
+button:disabled { opacity: .4; cursor: default; }
+button.sm { padding: 4px 10px; font-size: 13px; }
+.lb { color: #8b93a1; font-size: 12px; }
+.lapn {
+  width: 44px; text-align: center; font-variant-numeric: tabular-nums;
+  background: #14171d; color: #e6e8ec; border: 1px solid #333b49;
+  border-radius: 5px; padding: 4px 6px; font: inherit; font-size: 13px;
+}
+.lapn:focus { outline: none; border-color: #4a72ab; }
+.dur { color: #6b7383; font-size: 12px; font-variant-numeric: tabular-nums; }
+#status { margin-left: auto; color: #8b93a1; font-variant-numeric: tabular-nums; }
+
+.layout { display: flex; gap: 14px; align-items: flex-start; }
+#stage {
+  position: relative;                 /* 순위판과 결과창이 이 안에 얹힌다 */
+  flex: 1; height: 580px; min-width: 0;
+  background: #11141a; border-radius: 10px; overflow: hidden;
+}
+/* 자바스크립트가 캔버스를 만들기 전까지 보인다. 캔버스는 불투명이라 생기는 즉시 덮으므로
+   따로 지울 필요가 없다. 기다림의 대부분은 모듈을 받는 동안이고, 그게 이 글자가 나오는 때다. */
+.loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: #6b7383; font-size: 13px; pointer-events: none;
+}
+#stage canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+/* ── 화면 위 순위판 ────────────────────────────────── */
+.hud {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  padding: 8px 10px 8px 8px; border-radius: 9px;
+  background: rgba(14, 17, 23, .58);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font-size: 12.5px; line-height: 1; pointer-events: none;
+  color: #e6e8ec;
+}
+.hud-board { position: relative; }
+.hud-row {
+  position: absolute; top: 0; left: 0; right: 0; height: 23px;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  transition: transform .22s cubic-bezier(.4, 0, .2, 1);
+}
+.hud-row .rk { color: #98a0ae; width: 15px; text-align: right; font-variant-numeric: tabular-nums; }
+.hud-row .nm { min-width: 54px; }
+.hud-row .bs { color: #ffd98a; font-size: 10px; letter-spacing: -1px; margin-left: 2px; }
+.hud-row.done { opacity: .5; }
+
+/* ── 결과창 ──────────────────────────────────────── */
+.result {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 13, 18, .55);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  opacity: 0; transition: opacity .3s ease;
+}
+/* **이 줄이 없으면 조작이 통째로 막힌다.** `.result` 에 display:flex 가 있으면
+   작성자 스타일이 브라우저 기본 `[hidden] { display: none }` 을 이겨서, 결과창이
+   안 보이는 채로(opacity 0) 무대 전체를 덮은 상태가 된다. z-index 3 이라 캔버스로 가야 할
+   드래그·휠이 전부 여기로 빨려 들어간다 — 자동 연출은 스스로 움직이니 티가 안 나고,
+   시점을 고른 뒤에야 「마우스가 안 먹는다」로 드러난다. */
+.result[hidden] { display: none; }
+.result.in { opacity: 1; }
+.result-card {
+  background: #1a1d23; border: 1px solid #333b49; border-radius: 14px;
+  padding: 18px 26px 20px; text-align: center; min-width: 210px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
+  transform: translateY(10px) scale(.97); transition: transform .3s cubic-bezier(.2, .8, .3, 1);
+}
+.result.in .result-card { transform: none; }
+/* 이름보다 먼저 눈에 들어와야 해서 크고 노랗게. 자간을 벌려야 대문자가 안 뭉친다. */
+.result .winlabel {
+  font-size: 34px; font-weight: 800; line-height: 1;
+  color: #ffd54a; letter-spacing: .16em; text-indent: .16em;
+}
+.result .win { font-size: 24px; font-weight: 700; margin: 6px 0 14px; }
+.result .final { list-style: none; margin: 0 0 14px; padding: 0; text-align: left; }
+.result .final li {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; padding: 2px 0; color: #b6bcc7;
+}
+.result .final li:first-child { color: #e6e8ec; font-weight: 600; }
+.result .final .rk { color: #6b7383; width: 14px; text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 560px) {
+  .hud { font-size: 11.5px; padding: 6px 8px; }
+}
+
+.side { width: 250px; flex: none; }
+.panel { background: #1a1d23; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.panel h2 {
+  font-size: 12px; color: #8b93a1; margin: 0 0 9px;
+  font-weight: 600; letter-spacing: .04em;
+}
+/* 순위 줄에서 공통으로 쓰는 두 가지. 색깔점과 이름은 순위판과 결과창이 같이 쓴다.
+   등수·주법·부스터는 쓰는 쪽마다 크기가 달라서 각자 정한다. */
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.nm { flex: 1; }
+
+/* ── 참가자 입력 ──────────────────────────────────── */
+/* 바퀴 줄은 참가자 바로 위에 얹는다. 둘 다 「한 판을 어떻게 굴릴 것인가」라 같이 있는 게 맞다. */
+.lap {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0 0 11px; padding-bottom: 10px; border-bottom: 1px solid #262b34;
+}
+/* 참가자 / 부스터 — 부스터는 오른쪽 숫자 칸 위에 앉는다.
+   오른쪽에서 지우기 버튼(약 26px)과 간격(5px)만큼 띄우면 숫자 칸과 겹친다. */
+.hdr { display: flex; align-items: baseline; }
+.hdr h2 { flex: 1; margin-bottom: 9px; }
+.bh {
+  font-size: 12px; color: #8b93a1; font-weight: 600; letter-spacing: .04em;
+  padding-right: 31px;
+}
+.ent { display: flex; gap: 5px; align-items: center; margin-bottom: 5px; }
+.ent input {
+  background: #14171d; color: #e6e8ec; border: 1px solid #333b49;
+  border-radius: 5px; padding: 4px 7px; font: inherit; font-size: 13px; min-width: 0;
+}
+.ent input:focus { outline: none; border-color: #4a72ab; }
+.ent .en { flex: 1; }
+.ent .ew { width: 46px; text-align: center; font-variant-numeric: tabular-nums; }
+.ent .del {
+  padding: 3px 8px; font-size: 14px; line-height: 1;
+  background: transparent; border-color: transparent; color: #6b7383; flex: none;
+}
+.ent .del:hover:not(:disabled) { background: #3a2530; color: #e08b8b; }
+.cnt { color: #6b7383; font-size: 12px; margin-left: auto; font-variant-numeric: tabular-nums; }
+
+.about { margin-top: 26px; max-width: 720px; }
+.about h2 { font-size: 16px; margin: 22px 0 6px; }
+.about p { color: #b6bcc7; margin: 0 0 10px; }
+.about ul { color: #b6bcc7; margin: 0 0 10px; padding-left: 20px; }
+
+footer { margin-top: 32px; color: #6b7383; font-size: 13px; }
+footer a { color: #8b93a1; }
+
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .side { width: 100%; }
+  #stage { width: 100%; height: 62vh; min-height: 320px; }
+}

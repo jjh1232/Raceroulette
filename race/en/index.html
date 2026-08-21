@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Race Roulette — pick lunch, chores, or who pays | prelaps</title>
+<meta name="description" content="Decide lunch, chores, or who pays. Characters race and the finish order is your result — weights become boosters you can watch. No install.">
+
+<!-- canonical / hreflang / og:url must be absolute prelaps.com URLs.
+     Pointing at .pages.dev or .workers.dev creates duplicate indexing. -->
+<link rel="canonical" href="https://prelaps.com/race/en/">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prelaps.com/race/en/">
+<meta property="og:title" content="Race Roulette">
+<meta property="og:description" content="Decide lunch, chores, or who pays. Characters race and the finish order is your result — weights become boosters you can watch. No install.">
+<meta property="og:locale" content="en_US">
+
+<!-- 모듈을 미리 받게 한다. 이게 없으면 브라우저가 사슬을 한 칸씩 따라가느라
+     제일 큰 파일(three.core.min.js, 385KB)이 왕복 두 번 뒤에야 받기 시작한다:
+       HTML → main.js → three.module.min.js → three.core.min.js
+     미리 알려주면 셋이 동시에 내려온다. -->
+<link rel="modulepreload" href="../src/main.js">
+<link rel="modulepreload" href="../vendor/three.module.min.js">
+<link rel="modulepreload" href="../vendor/three.core.min.js">
+
+<!-- 구조화 데이터. 도구 페이지는 본문이 짧아서, 이게 「무엇을 하는 물건인지」를
+     검색엔진에 직접 알려주는 몫이 크다. 값은 화면에 있는 것과 같아야 한다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Race Roulette",
+  "url": "https://prelaps.com/race/en/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript and WebGL",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "description": "Decide lunch, chores, or who pays. Characters race and the finish order is your result — weights become boosters you can watch. No install."
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <a class="home" href="/en/">prelaps</a>
+    <h1>Race Roulette</h1>
+    <p class="tagline">Up to twelve runners take one lap of an oval track. Weights come in as boosters.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/" hreflang="ko">한국어</a>
+    <a href="../en/" aria-current="true" hreflang="en">English</a>
+  </nav>
+</header>
+
+<div class="bar">
+  <button id="start" data-running="Running">Start</button>
+  <button id="again">Reset</button>
+  <button id="shuffle">Shuffle gaits</button>
+  <button id="lanes">Shuffle lanes</button>
+  <button id="names" class="on">Names</button>
+  <span style="width:8px"></span>
+  <button class="sp on sm" data-sp="1">1x</button>
+  <button class="sp sm" data-sp="2">2x</button>
+  <button class="sp sm" data-sp="4">4x</button>
+  <span id="status"></span>
+</div>
+
+<div class="layout">
+  <div id="stage"><span class="loading">Loading…</span></div>
+
+  <div class="side">
+    <div class="panel">
+      <div class="lap" id="lapRow" data-word=" laps">
+        <span class="lb">Laps</span>
+        <input id="lapn" class="lapn" type="number" min="1" max="5" step="1" value="1">
+        <span id="dur" class="dur" data-unit="s"></span>
+      </div>
+      <div class="hdr"><h2>RUNNERS</h2><span class="bh">BOOSTERS</span></div>
+      <div id="entries" data-names="Alex,Blake,Casey,Drew" data-ph="Name" data-fallback="Runner"></div>
+      <div class="bar" style="margin:9px 0 0;gap:6px">
+        <button id="add" class="sm">Add</button>
+        <span id="count" class="cnt"></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>CAMERA</h2>
+      <div class="bar" style="margin:0;gap:5px">
+        <button id="auto" class="sm on">Auto</button>
+        <button class="vw sm" data-view="side">Side</button>
+        <button class="vw sm" data-view="top">Above</button>
+        <button class="vw sm" data-view="stadium">Stadium</button>
+      </div>
+      <p style="color:#6b7383;font-size:11.5px;margin:9px 0 0">
+        Auto cuts between shots as the race moves. Drag to orbit, scroll or pinch to zoom.
+        On auto it snaps back 3s after you let go; pick a shot and auto turns off, so your
+        angle sticks. Double-click to return to the shot you picked.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- The copy stays in static HTML. Even when JavaScript draws the stage,
+     the readable part has to be in the document from the start to get indexed. -->
+<section class="about">
+  <h2>Is one lane better than another?</h2>
+  <p>
+    On a real athletics track the outer lanes are longer, so runners start from staggered lines.
+    This one does that correction in the maths instead — your position is measured as how far
+    around your own lane you have come, so no lane is quicker or slower than another.
+    Who wins is decided by the weights you set, and by nothing else.
+  </p>
+  <p>
+    When you are deciding who pays for dinner or who presents first,
+    a result everyone watched happen tends to land better than "the app picked you."
+  </p>
+  <p>
+    Picking lunch, settling who buys the coffee, chore rotas, cleaning duty, presentation order —
+    anything you would otherwise settle with a spinning wheel, a random name picker, or drawing
+    straws. Type the names in and it draws again every time.
+  </p>
+
+  <h2>How weighting works</h2>
+  <p>
+    A runner with weight 3 wins <strong>exactly three times as often</strong> as a runner with
+    weight 1. The win probability is that runner's weight divided by the total: give eight runners
+    3·1·2·1·2·1·1·1 and the first wins 25% of the time, a weight-1 runner 8.3%.
+  </p>
+  <p>
+    The race is how that result gets <strong>shown</strong>. The finishing order is drawn fairly
+    first, and the race is staged so it lands that way. Finishers are 0.2–0.6s apart, close enough
+    on screen to need a photo finish. The lead changes more than ten times a race, and one in three
+    races is still undecided with three seconds left.
+  </p>
+  <p>
+    Boosters make the weighting visible. Weight three means three boosters, and every one of them
+    is spent before the finish line. A booster genuinely speeds a runner up — 1.4× while lit, worth
+    about a place and a half. It just does not decide the race. The draw already did that.
+  </p>
+
+  <h2>Gaits and looks</h2>
+  <p>
+    Every runner moves differently. Some sprint. Others crawl, walk on their hands,
+    cartwheel, or simply roll down the track. Head shapes and builds are dealt out so no two runners look alike and stay that way. Shuffle gaits redraws how they move; Shuffle lanes redraws where they stand.
+  </p>
+  <ul>
+    <li>Eight gaits — cartwheel, sprint, crawl, handstand, float, march, skate, roll</li>
+    <li>Type in names and booster counts — two to twelve runners, lanes follow the count</li>
+    <li>Eight head shapes and four builds, dealt out so they do not clump</li>
+    <li>Name tags float above the runners, and can be switched off</li>
+    <li>Auto direction cuts between shots as the race moves; or pick side, above or whole stadium, and drag to fine-tune</li>
+  </ul>
+
+  <h2>Where the data goes</h2>
+  <p>
+    Nowhere. Everything is computed inside your browser, and no name or result is sent to a server.
+    Refresh the page and it is gone.
+  </p>
+</section>
+
+<footer>
+  <a href="/en/">prelaps home</a> ·
+  <a href="/en/privacy#race">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+<noscript>
+  <p style="color:#e0834a">This tool renders a 3D stage, so JavaScript is required.</p>
+</noscript>
+
+<script type="module" src="../src/main.js"></script>
+</body>
+</html>

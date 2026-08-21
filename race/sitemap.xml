@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 언어판만 넣는다. /race/ 루트는 Accept-Language 로 302 하는 통로라
+     canonical 도 없고 hreflang 도 안 가리킨다 — 색인 대상이 아니다 (헌법 §5). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://prelaps.com/race/ko/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
+    <lastmod>2026-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
+    <lastmod>2026-08-22</lastmod>
+  </url>
+</urlset>

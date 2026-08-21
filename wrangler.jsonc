@@ -1,0 +1,52 @@
+{
+  // Cloudflare Workers (Static Assets) 배포 설정.
+  //
+  // 이 프로젝트에는 빌드 단계가 없다 — race/ 안의 파일이 그대로 사이트다.
+  //
+  // ⚠ directory 를 "./race" 가 아닌 "." 으로 바꾸지 말 것.
+  //    저장소 루트를 올리면 README.md·CLAUDE.md·prototype/ 이 같이 공개되어 색인된다.
+  //    (README 를 race/ 밖으로 옮겨 둔 이유도 이것이다)
+  "name": "race",
+  "compatibility_date": "2026-08-15",
+
+  // 자산 앞단에서 URL 의 /race 접두사를 떼고, 루트를 언어판으로 302 하는 스크립트.
+  // 자세한 건 그 파일 주석. (변환·번들링이 없으므로 "빌드 금지" 원칙은 그대로다)
+  "main": "./worker/index.js",
+
+  // prelaps.com 은 우산 브랜드다 — 도구가 하위 경로로 붙고 이 도구는 /race 다.
+  // 루트와 나머지 경로는 prelaps-router Worker 가 가져간다.
+  //
+  // prelaps-router 의 prelaps.com/* 와 겹치지만, Cloudflare 는 더 구체적인 라우트를
+  // 먼저 쓰므로 이쪽이 이긴다.
+  //
+  // 끝 슬래시 없는 /race 는 이 패턴에 안 걸린다 — 그건 prelaps-router 의 TOOLS 가
+  // 받아서 /race/ 로 301 한다.
+  //
+  // 커스텀 도메인은 붙이지 않는다. 붙이면 같은 내용이 두 주소로 열려 중복 콘텐츠가 된다.
+  "routes": [
+    { "pattern": "prelaps.com/race/*", "zone_name": "prelaps.com" }
+  ],
+
+  "assets": {
+    "directory": "./race",
+
+    // main 이 있으므로 env.ASSETS 로 자산을 부를 수 있게 이름을 준다.
+    "binding": "ASSETS",
+
+    // 기본값은 "자산 먼저 찾고, 없으면 Worker" 다.
+    // 그러면 접두사를 떼기도 전에 자산 조회가 빗나가므로 순서를 뒤집는다.
+    // 이걸 빠뜨리면 /race/styles.css 가 404 로 나온다.
+    "run_worker_first": true,
+
+    // 언어판이 폴더(ko/index.html)라 끝 슬래시가 붙는 주소다.
+    // canonical·og:url·sitemap 이 전부 https://prelaps.com/race/ko/ 형태이므로
+    // 이 값이 그 형태와 맞아야 한다. 허브(build.format: 'file')와 반대인 것이 정상이다 —
+    // 도구는 상대 경로를 쓰기 때문에 끝 슬래시가 없으면 링크가 한 단계 위로 풀려 전부 깨진다.
+    "html_handling": "auto-trailing-slash",
+
+    // 없는 주소는 우리 404 를 status 404 로 돌려준다.
+    // 이게 없으면 없는 주소가 정상 페이지로 색인되는 soft 404 가 되고,
+    // 화면상 아무 표시가 없어 눈으로는 못 잡는다.
+    "not_found_handling": "404-page"
+  }
+}
