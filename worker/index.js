@@ -25,6 +25,42 @@ const LANGS = ['ko', 'en', 'ja'];
  */
 const FALLBACK = 'en';
 
+/** GA4 측정 ID. */
+const GA_ID = 'G-NQ5XY9JPJ4';
+
+/**
+ * 애널리틱스 스니펫은 HTML 파일이 아니라 **여기 한 곳에만** 있다.
+ * 페이지마다 붙여두면 언어판을 하나 늘릴 때 조용히 빠뜨리고, 빠진 건 화면에 안 보인다.
+ * 측정 ID 를 바꿀 일이 생겨도 고칠 곳이 한 줄이다.
+ */
+const GA_SNIPPET = `<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${GA_ID}');
+</script>
+`;
+
+/**
+ * HTML 응답의 </head> 직전에 GA 스니펫을 끼운다.
+ *
+ * HTML 이 아니면 손대지 않는다 — CSS·JS·three.js 번들까지 HTMLRewriter 에 태우면
+ * 전부 스트리밍 파서를 지나가게 되어 낭비다.
+ *
+ * 로컬(`npm run serve`)에는 Worker 가 없어서 이 주입도 없다. 개발 중 클릭이
+ * 실제 방문자 수치에 섞이지 않는다는 뜻이라, 이건 손해가 아니라 이득이다.
+ */
+function withAnalytics(response) {
+  if (!(response.headers.get('content-type') || '').includes('text/html')) return response;
+
+  return new HTMLRewriter()
+    .on('head', { element: (el) => el.append(GA_SNIPPET, { html: true }) })
+    .transform(response);
+}
+
 /** Accept-Language 헤더에서 우리가 가진 언어를 고른다. q 값 순서대로 본다. */
 function pickLang(header) {
   if (!header) return FALLBACK;
@@ -54,7 +90,7 @@ export default {
     // 조용히 경로를 망가뜨리지 않도록 막아둔다. 앞 N글자를 무조건 자르면
     // /styles.css 가 "es.css" 가 되어 404 가 난다.
     if (url.hostname !== CANONICAL_HOST || !url.pathname.startsWith(PREFIX)) {
-      return env.ASSETS.fetch(request);
+      return withAnalytics(await env.ASSETS.fetch(request));
     }
 
     // /race/en/ -> /en/   자산은 race/ 루트 기준이다.
@@ -87,7 +123,7 @@ export default {
     // 그대로 흘려보내면 도구 밖으로 튕긴다 — /race/ko/index.html 의 Location 이
     // /ko/ 로 나가서 허브의 한국어 페이지로 가버린다.
     const location = response.headers.get('location');
-    if (!location) return response;
+    if (!location) return withAnalytics(response);
 
     const to = new URL(location, url);
     const headers = new Headers(response.headers);
