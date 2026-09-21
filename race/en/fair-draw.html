@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>How to run a draw people will accept — ladders, wheels and random pickers | prelaps</title>
+<meta name="description" content="Where ladder lotteries, spinning wheels and random-pick buttons each hold up and where they fall apart, how to apply weights honestly, and what makes a result stick.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/race/en/fair-draw">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/fair-draw">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/fair-draw">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/fair-draw">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/fair-draw">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/race/en/fair-draw">
+<meta property="og:title" content="How to run a draw people will accept">
+<meta property="og:description" content="Where ladder lotteries, spinning wheels and random-pick buttons each hold up and where they fall apart, how to apply weights honestly, and what makes a result stick.">
+<meta property="og:image" content="https://prelaps.com/race/og.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to run a draw people will accept — ladders, wheels and random pickers",
+  "description": "Where ladder lotteries, spinning wheels and random-pick buttons each hold up and where they fall apart, how to apply weights honestly, and what makes a result stick.",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://prelaps.com/race/en/fair-draw",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/en">prelaps</a> · <a href="./">Race Roulette</a></p>
+    <h1>How to run a draw people will accept — ladders, wheels and random pickers</h1>
+    <p class="tagline">Even odds and everyone believing the odds were even are two different problems. Arguments almost always come from the second.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/fair-draw" hreflang="ko">한국어</a>
+    <a href="../en/fair-draw" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/fair-draw" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>Who pays for lunch, who presents first, whose turn it is to clean. There is no shortage of ways to decide, yet people still grumble afterwards. Usually not because the odds were wrong, but because <b>nobody got to watch.</b></p>
+
+<h2>Fairness is two things</h2>
+<p>"Fair" bundles together two separate claims about a draw.</p>
+<ul>
+<li><b>Are the odds even?</b> A maths question. With eight people, does everyone get one in eight?</li>
+<li><b>Can the participants believe that?</b> A trust question. Were they in a position to check?</li>
+</ul>
+<p>The first is rarely a problem any more; whatever tool you use, the randomness is good enough. <b>Arguments come from the second.</b> "I just hit random" satisfies the first perfectly and the second not at all.</p>
+
+<h2>Ladder lotteries</h2>
+<p>The one with vertical lines and a scattering of horizontal rungs. Mathematically it holds up well: with enough rungs placed at random, the outcome is a uniformly random permutation. Each rung only swaps two neighbouring paths, so no starting position ends up favoured.</p>
+<p>The weak point is not the maths, it is the <b>order of operations</b>. People usually write the names first and draw the rungs afterwards, which lets whoever draws last steer the result. On a short ladder, tracing a path by eye is not hard either.</p>
+<p>The fix is simple: <b>draw all the rungs first, then assign the names.</b> Flipping the order makes the same method far more solid.</p>
+
+<h2>Spinning wheels</h2>
+<p>The area of each slice is the probability, which means the odds are <b>visible</b>. When everyone watches the pointer slow down, there is not much left to argue about.</p>
+<p>It breaks down as the group grows. Up to about eight slices you can compare sizes at a glance; at twenty nobody can. Weights make it worse — if someone's slice is supposed to be three times bigger, no spectator has any way to verify that it is.</p>
+
+<h2>The "pick random" button</h2>
+<p>Mathematically the cleanest option, and on trust the weakest. Nobody but the person clicking sees anything, and the real problem is that <b>it can be clicked again</b>. If the first result is unwelcome, a second click leaves no trace.</p>
+<p>If you use one, share your screen and agree in advance how many times it gets pressed. That is a procedural fix, not a tooling one.</p>
+
+<h2>Applying weights honestly</h2>
+<p>Sometimes even odds are not what you want; maybe whoever paid last time should be less likely to pay again. There is only one honest rule here.</p>
+<p><b>Your probability = your weight ÷ the sum of all weights.</b></p>
+<p>Give eight people weights of 3, 1, 2, 1, 2, 1, 1, 1 and the total is 12, so the person on 3 sits at 25% and each person on 1 at 8.3%. That arithmetic should be visible. The common failure is announcing "double chance" while the implementation does something else entirely, and without the numbers on screen nobody catches it.</p>
+<p>Avoid setting a weight to zero. Zero does not mean "less likely", it means "never". If you want someone out, taking them off the list is the honest way to do it.</p>
+
+<h2>What this tool does</h2>
+<p><a href="./">Race Roulette</a> fixes the order deliberately: <b>the finishing order is drawn fairly first, and the race is then staged so the runners arrive in that order.</b></p>
+<p>That order matters. Do it the other way round, letting a physics simulation decide who crosses first, and lane position and collisions start contaminating the odds by an amount nobody can calculate. Keeping the spectacle separate from the draw leaves the probabilities exactly as stated.</p>
+<p>A few things follow from that.</p>
+<ul>
+<li><b>No lane is better than another.</b> On a real athletics track the outer lanes run further per lap, which is why the starts are staggered. Here, position is measured as how far a runner has gone around their own lane, so there are no fast or slow lanes.</li>
+<li><b>Weights are on screen.</b> A weight of three shows up as three boosters. Nothing is hidden, and the probability is exactly the division above.</li>
+<li><b>Everyone watches the same thing.</b> Finishes land within 0.2 to 0.6 seconds of each other, so you have to watch to the end, and roughly one race in three changes its winner inside the last three seconds.</li>
+</ul>
+<p>It keeps what a spinning wheel is good at, everyone watching together, and solves the part wheels fail at once the group grows.</p>
+
+<h2>Whatever you use</h2>
+<p>Procedure matters more than the tool. Three habits remove most of the grumbling.</p>
+<ul>
+<li><b>Agree the rules before starting</b> — whether weights apply, how many places matter, what happens on a tie.</li>
+<li><b>Watch the result together</b> — if one person draws alone and reports back, suspicion sticks to them even when they did nothing wrong.</li>
+<li><b>Rule out re-runs in advance</b> — the moment someone asks for "one more go" after seeing the result, that draw is no longer fair.</li>
+</ul>
+<p>A fair draw leans far more on <b>a procedure everyone accepted</b> than on the quality of the random numbers.</p>
+  <p class="back"><a href="./">Open Race Roulette</a></p>
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="./">Race Roulette</a> ·
+  <a href="/en/privacy#race">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+</body>
+</html>

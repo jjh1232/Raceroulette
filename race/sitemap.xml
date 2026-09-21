@@ -9,7 +9,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-09-03</lastmod>
   </url>
   <url>
     <loc>https://prelaps.com/race/en/</loc>
@@ -17,7 +17,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-09-03</lastmod>
   </url>
   <url>
     <loc>https://prelaps.com/race/ja/</loc>
@@ -25,6 +25,54 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-09-03</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ko/fair-draw</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/fair-draw"/>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/fair-draw</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/fair-draw"/>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/fair-draw</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/fair-draw"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/fair-draw"/>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ko/draw-many</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many"/>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/draw-many</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many"/>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/draw-many</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many"/>
+    <lastmod>2026-09-12</lastmod>
   </url>
 </urlset>

@@ -177,6 +177,50 @@
     Nowhere. Everything is computed inside your browser, and no name or result is sent to a server.
     Refresh the page and it is gone.
   </p>
+
+  <h2>Common questions</h2>
+
+  <h3>How many runners can I add?</h3>
+  <p>
+    Two to twelve. Add locks once twelve are in, and the track gains or loses lanes to match.
+    Names take up to ten characters, and a race runs between one and five laps.
+    More runners means a longer race, which is what the 2x and 4x buttons are for.
+  </p>
+
+  <h3>Can I enter the same name twice?</h3>
+  <p>
+    Yes — a name is only a label, and each row is a separate runner. If the point is to give
+    someone twice the chance, though, a booster of 2 does it better than a second row:
+    the odds come out the same, and the results board does not list the same name twice.
+  </p>
+
+  <h3>What does a booster of 0 do?</h3>
+  <p>
+    It takes that runner out of contention in practice. Internally a very small number is used
+    rather than a true zero, so a field where everyone is set to 0 still has someone to draw.
+    At the other end, weights go up to 99, but the boosters drawn on screen stop at six —
+    any more in one race and the booster looks permanently lit. The odds still use the number you typed.
+  </p>
+
+  <h3>Can I save or share a result?</h3>
+  <p>
+    There is no save. Refresh and both the names and the result are gone, so a screenshot of the
+    finishing board is the reliable way to keep one. There is no way to replay a particular race
+    either — Reset draws again from scratch.
+  </p>
+
+  <h3>Does it work on a phone?</h3>
+  <p>
+    It does. Drag to swing the camera round, pinch to pull in and push out. It draws in 3D, so it
+    needs a browser with WebGL; if an older device struggles, fewer runners makes it lighter.
+  </p>
+
+  <div class="readmore">
+    <h2>Reading</h2>
+    <p><a href="fair-draw">How to run a draw people will accept</a><br>Where ladders, wheels and random buttons hold up or fall apart, and why this tool draws the order first.</p>
+    <p><a href="draw-many">When you need more than one pick — groups, running order, duplicates</a><br>Picking one name and settling an order are different problems, including past twelve people.</p>
+  </div>
+
 </section>
 
 <footer>

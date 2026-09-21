@@ -45,7 +45,26 @@ const GA_SNIPPET = `<!-- Google tag (gtag.js) -->
 `;
 
 /**
- * HTML 응답의 </head> 직전에 GA 스니펫을 끼운다.
+ * 애드센스 퍼블리셔 ID (`ca-pub-…`). **발급 전에는 빈 문자열로 둔다.**
+ *
+ * 비어 있으면 아래에서 스니펫을 아예 만들지 않는다. 플레이스홀더를 그대로 올리면
+ * 남의 client 로 광고 요청이 나가고, 하필 그 상태가 심사에 걸린다.
+ *
+ * ⚠ 이 값을 채울 곳이 다섯 군데다 — 허브 `Base.astro` 와 도구 Worker 넷.
+ *   저장소가 갈려 있어 한곳에 모을 수가 없다. 하나만 채우고 나머지를 빠뜨리면
+ *   그 도구의 페이지에만 광고가 안 나오는데, 화면상 아무 표시가 없어 눈으로는 못 잡는다.
+ *   허브에만 넣으면 심사 대상 페이지의 과반(도구 24장)이 통째로 빠진다.
+ */
+const ADSENSE_ID = 'ca-pub-3724742785414572';
+
+/** ID 가 없으면 빈 문자열 — 아무것도 끼우지 않는다. */
+const ADSENSE_SNIPPET = ADSENSE_ID
+  ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}" crossorigin="anonymous"></script>
+`
+  : '';
+
+/**
+ * HTML 응답의 </head> 직전에 GA·애드센스 스니펫을 끼운다.
  *
  * HTML 이 아니면 손대지 않는다 — CSS·JS·three.js 번들까지 HTMLRewriter 에 태우면
  * 전부 스트리밍 파서를 지나가게 되어 낭비다.
@@ -53,11 +72,11 @@ const GA_SNIPPET = `<!-- Google tag (gtag.js) -->
  * 로컬(`npm run serve`)에는 Worker 가 없어서 이 주입도 없다. 개발 중 클릭이
  * 실제 방문자 수치에 섞이지 않는다는 뜻이라, 이건 손해가 아니라 이득이다.
  */
-function withAnalytics(response) {
+function withHeadScripts(response) {
   if (!(response.headers.get('content-type') || '').includes('text/html')) return response;
 
   return new HTMLRewriter()
-    .on('head', { element: (el) => el.append(GA_SNIPPET, { html: true }) })
+    .on('head', { element: (el) => el.append(GA_SNIPPET + ADSENSE_SNIPPET, { html: true }) })
     .transform(response);
 }
 
@@ -90,7 +109,7 @@ export default {
     // 조용히 경로를 망가뜨리지 않도록 막아둔다. 앞 N글자를 무조건 자르면
     // /styles.css 가 "es.css" 가 되어 404 가 난다.
     if (url.hostname !== CANONICAL_HOST || !url.pathname.startsWith(PREFIX)) {
-      return withAnalytics(await env.ASSETS.fetch(request));
+      return withHeadScripts(await env.ASSETS.fetch(request));
     }
 
     // /race/en/ -> /en/   자산은 race/ 루트 기준이다.
@@ -123,7 +142,7 @@ export default {
     // 그대로 흘려보내면 도구 밖으로 튕긴다 — /race/ko/index.html 의 Location 이
     // /ko/ 로 나가서 허브의 한국어 페이지로 가버린다.
     const location = response.headers.get('location');
-    if (!location) return withAnalytics(response);
+    if (!location) return withHeadScripts(response);
 
     const to = new URL(location, url);
     const headers = new Headers(response.headers);

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>여러 번 뽑아야 할 때 — 조 나누기, 순번 정하기, 중복 처리 | prelaps</title>
+<meta name="description" content="한 명만 뽑는 것과 여러 번 뽑는 것은 다른 문제입니다. 중복 없이 뽑는 법, 조를 공평하게 나누는 법, 인원이 한계를 넘을 때의 방법.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/race/ko/draw-many">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/draw-many">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/draw-many">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/race/ko/draw-many">
+<meta property="og:title" content="여러 번 뽑아야 할 때">
+<meta property="og:description" content="한 명만 뽑는 것과 여러 번 뽑는 것은 다른 문제입니다. 중복 없이 뽑는 법, 조를 공평하게 나누는 법, 인원이 한계를 넘을 때의 방법.">
+<meta property="og:image" content="https://prelaps.com/race/og.png">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "여러 번 뽑아야 할 때 — 조 나누기, 순번 정하기, 중복 처리",
+  "description": "한 명만 뽑는 것과 여러 번 뽑는 것은 다른 문제입니다. 중복 없이 뽑는 법, 조를 공평하게 나누는 법, 인원이 한계를 넘을 때의 방법.",
+  "inLanguage": "ko",
+  "mainEntityOfPage": "https://prelaps.com/race/ko/draw-many",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/ko">prelaps</a> · <a href="./">달리기 룰렛</a></p>
+    <h1>여러 번 뽑아야 할 때 — 조 나누기, 순번 정하기, 중복 처리</h1>
+    <p class="tagline">한 명 뽑기와 순서 정하기는 다른 문제입니다. 섞으면 확률이 조용히 어긋납니다.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/draw-many" aria-current="true" hreflang="ko">한국어</a>
+    <a href="../en/draw-many" hreflang="en">English</a>
+    <a href="../ja/draw-many" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>뽑기 도구는 대개 「한 명 뽑기」를 전제로 만들어져 있습니다. 그런데 실제로 필요한 건 조 나누기, 발표 순서, 당번 순번처럼 <b>여러 번에 걸친 결과</b>인 경우가 많습니다. 이 둘은 같은 문제가 아니고, 섞으면 확률이 조용히 어긋납니다.</p>
+
+<h2>한 번 뽑기와 여러 번 뽑기는 다른 문제다</h2>
+<p>차이는 <b>뽑은 사람을 다시 넣느냐</b>입니다.</p>
+<ul>
+<li><b>다시 넣는 경우</b> — 매번 전원이 후보입니다. 같은 사람이 연속으로 걸릴 수 있습니다. 「오늘 커피 살 사람」을 매일 뽑는 상황이 이쪽입니다.</li>
+<li><b>다시 안 넣는 경우</b> — 한 번 걸린 사람은 빠집니다. 발표 순서, 당번 순번, 조 나누기가 전부 이쪽입니다.</li>
+</ul>
+<p>두 번째가 훨씬 흔한데, 도구는 대개 첫 번째만 지원합니다. 그래서 사람들이 뽑고 지우고 다시 뽑기를 반복하게 되고, 그 과정에서 실수가 생깁니다.</p>
+
+<h2>중복 없이 뽑기</h2>
+<p>한 명씩 뽑아서 빼는 방식은 번거롭기도 하지만 <b>실수가 끼기 쉽습니다.</b> 지우는 걸 깜빡하면 같은 사람이 두 번 걸리고, 그때는 이미 판이 진행된 뒤입니다.</p>
+<p><a href="./">달리기 룰렛</a>은 이 문제를 구조로 피합니다 — 한 판이 <b>전체 순위</b>를 줍니다. 1등부터 꼴찌까지 한 번에 나오므로 중복이 원리적으로 생기지 않고, 다시 뽑을 일도 없습니다.</p>
+<p>그래서 쓰는 법이 이렇게 됩니다.</p>
+<ul>
+<li><b>발표 순서</b> — 순위가 그대로 순서입니다.</li>
+<li><b>당번 순번</b> — 순위를 그대로 돌아가며 씁니다.</li>
+<li><b>한 명만 뽑기</b> — 1등만 보고 나머지는 무시합니다.</li>
+<li><b>벌칙</b> — 꼴찌를 봅니다. 이쪽이 끝까지 보게 만들어서 더 재밌습니다.</li>
+</ul>
+
+<h2>조 나누기</h2>
+<p>순위가 나와 있으면 조 나누기는 그 위에서 바로 됩니다. 방법이 두 가지인데 결과가 꽤 다릅니다.</p>
+<p><b>끊어 나누기</b> — 여덟 명을 두 조로 나눌 때 1~4등 A조, 5~8등 B조. 뽑기 결과가 무작위였다면 이 방식도 편향이 없습니다. 간단하고 셈하기 쉽습니다.</p>
+<p><b>번갈아 나누기</b> — 1등 A, 2등 B, 3등 B, 4등 A, 5등 A… 이렇게 갈지자로 돌립니다. 순위에 <b>실력 같은 의미가 들어 있을 때</b> 쓰는 방식입니다. 이 도구의 순위는 무작위라 굳이 이렇게 할 필요가 없지만, 사람들이 순위를 실력으로 읽는 자리(팀 나누기 같은)에서는 이쪽이 덜 억울합니다.</p>
+<p>어느 쪽을 쓸지 <b>돌리기 전에</b> 정하세요. 결과를 보고 나서 방식을 고르면 그때부터는 뽑기가 아닙니다.</p>
+
+<h2>인원이 열두 명을 넘을 때</h2>
+<p>이 도구는 한 판에 <b>2명에서 12명</b>까지입니다. 트랙에 그 이상을 세우면 화면에서 누가 누군지 구분이 안 되기 때문입니다. 더 많으면 두 가지 방법이 있습니다.</p>
+<ul>
+<li><b>조를 먼저 나눈다</b> — 스무 명이면 임의로 두 조로 갈라 각각 돌리고, 두 순위를 이어 붙입니다. 조 배정 자체가 무작위면 전체도 무작위입니다.</li>
+<li><b>예선과 본선</b> — 조별로 돌려서 각 조 1등끼리 다시 한 판. 이건 확률이 균등하지 않습니다. 작은 조에 있던 사람이 유리합니다. 재미로는 괜찮지만 <b>공정해야 하는 자리에는 쓰지 마세요.</b></li>
+</ul>
+<p>스무 명 중 한 명만 뽑으면 되는 경우라면, 조를 나눠 각 조 1등끼리 붙이는 것보다 <b>전원을 한 번에 다루는 다른 방법</b>이 정확합니다. 예선 방식은 조 크기가 다르면 그만큼 확률이 틀어집니다.</p>
+
+<h2>가중치가 여러 번 뽑기에서 어긋나는 지점</h2>
+<p>가중치를 준 채로 전체 순위를 뽑으면, 가중치는 <b>1등이 될 확률</b>에 정확히 반영됩니다. 그런데 2등, 3등의 확률은 계산이 조금 복잡해집니다 — 1등이 빠진 다음의 분포라서 단순한 비례가 아닙니다.</p>
+<p>실무적으로는 이렇게 생각하면 됩니다.</p>
+<ul>
+<li><b>1등만 볼 거면</b> 가중치는 말한 그대로 동작합니다. 가중치 3 이면 합의 3/합 만큼입니다.</li>
+<li><b>전체 순위를 쓸 거면</b> 가중치를 안 주는 편이 설명하기 쉽습니다. 「가중치 3인 사람이 왜 5등이냐」를 설명하려면 결국 조건부 확률 이야기가 됩니다.</li>
+</ul>
+<p>가중치를 0으로 두는 것도 피하세요. 0은 「덜 걸린다」가 아니라 <b>「절대 1등이 안 된다」</b>입니다. 빼고 싶으면 명단에서 빼는 게 정직합니다.</p>
+
+<h2>같은 이름이 여러 개일 때</h2>
+<p>동명이인은 그대로 넣어도 됩니다. 도구는 이름을 식별자로 쓰지 않으므로 같은 이름 둘이 각각 독립적으로 달립니다. 다만 <b>결과를 보고 누가 누군지 알 수 없어지므로</b>, 「김민수A」·「김민수B」처럼 구분해 두는 편이 낫습니다. 이름은 10자까지 들어갑니다.</p>
+
+<h2>결과를 남기는 법</h2>
+<p>저장 기능은 없습니다. 새로 고치면 이름도 결과도 사라지고, 같은 판을 다시 재생하는 방법도 없습니다 — 「다시」를 누르면 추첨부터 새로 합니다.</p>
+<p>남겨야 한다면 <b>순위판이 뜬 화면을 캡처</b>하세요. 여러 번 뽑는 일에서는 이게 특히 중요합니다. 조 나누기나 순번은 나중에 「그때 몇 등이었지?」가 반드시 나오는데, 그때 캡처가 없으면 다시 돌리는 수밖에 없고 그러면 처음 결과의 의미가 사라집니다.</p>
+<p>규칙을 정하고 시작하는 것이 결국 제일 중요합니다. 이 이야기는 <a href="fair-draw">뽑기는 어떻게 해야 공정한가</a>에 따로 정리해 두었습니다.</p>
+  <p class="back"><a href="./">달리기 룰렛 열기</a></p>
+</section>
+
+<footer>
+  <a href="/ko">prelaps 홈</a> ·
+  <a href="./">달리기 룰렛</a> ·
+  <a href="/ko/privacy#race">개인정보처리방침</a> ·
+  <a href="/ko/terms">이용약관</a> ·
+  <a href="/ko/contact">문의</a>
+</footer>
+
+</div>
+
+</body>
+</html>

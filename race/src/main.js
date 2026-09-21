@@ -467,10 +467,34 @@ function setRunning(v) {
   running = v;
   if (laneBtn) laneBtn.disabled = v;
 }
+/*
+ * 계측.
+ *
+ * GA 스니펫은 worker/index.js 가 </head> 에 끼워 넣는다. 여기서는 부르기만 한다.
+ * 로컬(npm run serve)에는 스니펫이 없어서 개발 중 클릭이 실제 수치에 안 섞인다.
+ *
+ * 이름은 `tool_use` 로 도구 셋(mojibake·race·imagesquish)이 통일한다.
+ * 도구마다 이름이 다르면 「방문 대비 실제 사용률」을 한 보고서에서 못 비교한다.
+ *
+ * ⚠ 입력한 이름은 보내지 않는다. 개인정보처리방침에 "페이지 안에만 있다" 고 적어 둔
+ *   값이라 계측이 그걸 깨면 안 된다. 사람 수와 가중치를 줬는지 여부만 보낸다.
+ */
+function track(params) {
+  if (typeof window.gtag === 'function') window.gtag('event', 'tool_use', Object.assign({ tool: 'race' }, params));
+}
+
 const startBtn = document.getElementById('start');
 document.getElementById('start').onclick = e => {
   setRunning(true); e.target.disabled = true;
   setStatus(startBtn.dataset.running || '');   // 바퀴 수는 무대 오른쪽 위에 따로 뜬다
+  // 「시작」이 이 도구의 핵심 동작이다. 여기까지 안 오고 나가면 UI 문제이고,
+  // 여기는 오는데 방문이 적으면 유입만 늘리면 된다 — 그 둘을 가르는 지점이다.
+  track({
+    runners: cands.length,
+    // 가중치를 실제로 쓰는 사람이 얼마나 되는지. 아무도 안 쓰면 UI 에서 접어도 된다.
+    weighted: cands.some(c => (c.w || 1) > 1) ? 'yes' : 'no',
+    laps,
+  });
 };
 
 // 바퀴 수. 바꾸면 판 길이가 달라지므로 레이스를 다시 뽑는다.

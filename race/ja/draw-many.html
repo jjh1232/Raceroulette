@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>何度も引く必要があるとき — 組分け・順番決め・重複の扱い | prelaps</title>
+<meta name="description" content="一人だけ選ぶのと順番を決めるのは別の問題です。重複なく引く方法、組を公平に分ける方法、人数が上限を超えたときのやり方。">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/race/ja/draw-many">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/draw-many">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/draw-many">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/race/ja/draw-many">
+<meta property="og:title" content="何度も引く必要があるとき">
+<meta property="og:description" content="一人だけ選ぶのと順番を決めるのは別の問題です。重複なく引く方法、組を公平に分ける方法、人数が上限を超えたときのやり方。">
+<meta property="og:image" content="https://prelaps.com/race/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "何度も引く必要があるとき — 組分け・順番決め・重複の扱い",
+  "description": "一人だけ選ぶのと順番を決めるのは別の問題です。重複なく引く方法、組を公平に分ける方法、人数が上限を超えたときのやり方。",
+  "inLanguage": "ja",
+  "mainEntityOfPage": "https://prelaps.com/race/ja/draw-many",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/ja">prelaps</a> · <a href="./">徒競走ルーレット</a></p>
+    <h1>何度も引く必要があるとき — 組分け・順番決め・重複の扱い</h1>
+    <p class="tagline">一人選ぶことと順番を決めることは別の問題です。混ぜると確率が静かにずれます。</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/draw-many" hreflang="ko">한국어</a>
+    <a href="../en/draw-many" hreflang="en">English</a>
+    <a href="../ja/draw-many" aria-current="true" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>抽選ツールはたいてい「一人選ぶ」ことを前提に作られています。ところが実際に必要なのは、組分け・発表順・当番の順番のように<b>複数回にわたる結果</b>であることが多いです。この二つは同じ問題ではなく、混ぜると確率が静かにずれます。</p>
+
+<h2>一回引くのと何度も引くのは別の問題</h2>
+<p>違いは<b>引いた人を戻すかどうか</b>です。</p>
+<ul>
+<li><b>戻す場合</b> — 毎回全員が候補です。同じ人が連続で当たることもあります。「今日コーヒーを買う人」を毎朝引くのはこちらです。</li>
+<li><b>戻さない場合</b> — 一度当たった人は外れます。発表順、当番の順番、組分けはすべてこちらです。</li>
+</ul>
+<p>二つ目のほうがずっと多いのに、ツールはたいてい一つ目しか想定していません。そのため引いては消し、また引くという作業になり、その過程でミスが入り込みます。</p>
+
+<h2>重複なく引く</h2>
+<p>一人ずつ引いて消す方式は面倒なだけでなく、<b>ミスが入りやすい</b>です。消し忘れれば同じ人が二度当たり、気づくのはたいてい後からです。</p>
+<p><a href="./">徒競走ルーレット</a>はこれを構造で避けます — 一回のレースが<b>順位を全部</b>返します。一位から最下位までが一度に出るので重複は原理的に起きず、引き直す必要もありません。</p>
+<p>そのため使い方はこうなります。</p>
+<ul>
+<li><b>発表順</b> — 順位がそのまま順番です。</li>
+<li><b>当番の順番</b> — 順位どおりに回していきます。</li>
+<li><b>一人だけ選ぶ</b> — 一位だけ見て残りは無視します。</li>
+<li><b>罰ゲーム</b> — 最下位を見ます。最後まで見ることになるので盛り上がります。</li>
+</ul>
+
+<h2>組分け</h2>
+<p>順位が出ていれば組分けはその上でそのままできます。方法が二つあり、性質がかなり違います。</p>
+<p><b>区切って分ける</b> — 八人を二組に分けるなら一〜四位がA組、五〜八位がB組。抽選が無作為だったならこの方式にも偏りはありません。単純で数えやすいです。</p>
+<p><b>交互に分ける</b> — 一位A、二位B、三位B、四位A、五位A…と折り返しながら振ります。順位に<b>実力のような意味が入っているとき</b>に使う方式です。このツールの順位は無作為なので必須ではありませんが、順位を実力として読む場面(チーム分けなど)ではこちらのほうが納得されます。</p>
+<p>どちらを使うかは<b>回す前に</b>決めてください。結果を見てから方式を選べば、その時点でもう抽選ではありません。</p>
+
+<h2>十二人を超えるとき</h2>
+<p>このツールは一回に<b>二人から十二人</b>までです。それ以上をトラックに並べると画面で誰が誰だか分からなくなるためです。多い場合は方法が二つあります。</p>
+<ul>
+<li><b>先に組を分ける</b> — 二十人なら任意に二組に割ってそれぞれ回し、二つの順位をつなげます。組分け自体が無作為なら全体も無作為です。</li>
+<li><b>予選と決勝</b> — 組ごとに回して各組一位で再戦。これは確率が均等になりません。小さい組にいた人が有利です。遊びなら構いませんが、<b>公平さが要る場面には使わないでください。</b></li>
+</ul>
+<p>二十人から一人だけ選ぶのなら、各組の一位を戦わせるより<b>全員を一度に扱う方法</b>が正確です。予選方式は組の大きさが違えばその分だけ確率が狂います。</p>
+
+<h2>重みが複数回の抽選でずれるところ</h2>
+<p>重みを付けたまま順位を全部引くと、重みは<b>一位になる確率</b>に正確に反映されます。ところが二位、三位の確率は計算がやや込み入ります — 一位が抜けたあとの分布なので、単純な比例ではありません。</p>
+<p>実用上はこう考えれば足ります。</p>
+<ul>
+<li><b>一位しか見ないなら</b>重みは言ったとおりに働きます。合計12のうち重み3なら25%です。</li>
+<li><b>順位を全部使うなら</b>重みを付けないほうが説明が楽です。でなければ「重み3の人がなぜ五位なのか」を条件付き確率の話で説明することになります。</li>
+</ul>
+<p>重みを0にするのもここでも避けてください。0は「当たりにくい」ではなく<b>「絶対に一位にならない」</b>です。外したいなら名簿から外すのが正直です。</p>
+
+<h2>同じ名前が複数あるとき</h2>
+<p>同名の人はそのまま入れて構いません。ツールは名前を識別子として使わないので、同じ名前の二人はそれぞれ独立に走ります。ただし<b>結果を見ても誰が誰だか分からなくなる</b>ので、「田中A」「田中B」のように区別しておくほうが賢明です。名前は十文字まで入ります。</p>
+
+<h2>結果を残す方法</h2>
+<p>保存機能はありません。再読み込みすれば名前も結果も消え、同じレースを再生する方法もありません — 「もう一度」を押せば抽選からやり直しです。</p>
+<p>残す必要があるなら<b>順位表が出た画面を撮ってください。</b>複数回の抽選では特に大事です。組分けや順番は後から必ず「あのとき何位だったか」が出てきますが、記録がなければ回し直すしかなく、そうすると最初の結果の意味が失われます。</p>
+<p>結局いちばん大事なのは、始める前に規則を決めることです。この話は<a href="fair-draw">公平なくじ引きとは</a>に別途まとめています。</p>
+  <p class="back"><a href="./">徒競走ルーレットを開く</a></p>
+</section>
+
+<footer>
+  <a href="/ja">prelaps ホーム</a> ·
+  <a href="./">徒競走ルーレット</a> ·
+  <a href="/ja/privacy#race">プライバシーポリシー</a> ·
+  <a href="/ja/terms">利用規約</a> ·
+  <a href="/ja/contact">お問い合わせ</a>
+</footer>
+
+</div>
+
+</body>
+</html>
