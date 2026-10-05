@@ -1,5 +1,7 @@
 # race — 달리기 룰렛 (Race Roulette)
 
+**사이트:** https://prelaps.com/race/
+
 `prelaps.com/race/` 에 들어갈 도구. HTML + three.js.
 
 ## 폴더가 이렇게 생긴 이유
