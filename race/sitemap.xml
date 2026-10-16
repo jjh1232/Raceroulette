@@ -9,7 +9,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://prelaps.com/race/en/</loc>
@@ -17,7 +17,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://prelaps.com/race/ja/</loc>
@@ -25,7 +25,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/"/>
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/"/>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://prelaps.com/race/ko/fair-draw</loc>
@@ -74,5 +74,77 @@
     <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/draw-many"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/draw-many"/>
     <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ko/order</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/order"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/order"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/order"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/order"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/order</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/order"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/order"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/order"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/order"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/order</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/order"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/order"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/order"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/order"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ko/who-pays</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/who-pays"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/who-pays</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/who-pays"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/who-pays</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/who-pays"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/who-pays"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ko/lunch</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/lunch"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/lunch"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/lunch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/lunch"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/en/lunch</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/lunch"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/lunch"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/lunch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/lunch"/>
+    <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://prelaps.com/race/ja/lunch</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prelaps.com/race/ko/lunch"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prelaps.com/race/en/lunch"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://prelaps.com/race/ja/lunch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prelaps.com/race/en/lunch"/>
+    <lastmod>2026-10-16</lastmod>
   </url>
 </urlset>
