@@ -1,11 +1,13 @@
 /* 도구는 prelaps.com/race/<언어>/ 아래에 있다. 절대 경로를 쓰면 도메인 루트 기준으로
    풀려서 전부 깨진다 — 이 파일 안의 모든 참조도 상대 경로여야 한다. */
 :root { color-scheme: dark; }
+/* 무대가 3D 라 이 도구만 어두운 화면으로 고정이다. 토스풍(2026-10-19, 헌법 §12)은 다른 도구의
+   **다크 모드 값**을 그대로 옮겨 맞췄다 — 바닥 #17171c · 카드 #222229 · 강조 #5b9cf8. */
 * { box-sizing: border-box; }
 
 body {
   margin: 0; padding: 20px 20px 40px;
-  background: #14161a; color: #e6e8ec;
+  background: #17171c; color: #ececf0;
   font: 15px/1.65 system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
 }
 .wrap { max-width: 1180px; margin: 0 auto; }
@@ -15,41 +17,41 @@ body {
    검색엔진에게도 이 페이지가 어디 속하는지 알려주는 내부 링크다. */
 .home {
   display: inline-block;
-  color: #6b7383; text-decoration: none;
+  color: #8b8b98; text-decoration: none;
   font-size: 12px; letter-spacing: .06em; text-transform: lowercase;
   margin-bottom: 2px;
 }
-.home:hover { color: #8b93a1; }
+.home:hover { color: #9e9eab; }
 
 header {
   display: flex; justify-content: space-between; align-items: flex-start;
   gap: 16px; margin-bottom: 16px;
 }
 h1 { font-size: 21px; margin: 0 0 4px; letter-spacing: -0.01em; }
-.tagline { color: #8b93a1; font-size: 14px; margin: 0; }
+.tagline { color: #9e9eab; font-size: 14px; margin: 0; }
 .langs { display: flex; gap: 12px; font-size: 13px; flex: none; padding-top: 3px; }
-.langs a { color: #8b93a1; text-decoration: none; }
-.langs a[aria-current="true"] { color: #e6e8ec; font-weight: 600; }
-.langs a:hover { color: #e6e8ec; }
+.langs a { color: #9e9eab; text-decoration: none; }
+.langs a[aria-current="true"] { color: #ececf0; font-weight: 600; }
+.langs a:hover { color: #ececf0; }
 
 .bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
 button {
-  background: #232730; color: #e6e8ec; border: 1px solid #363c48;
+  background: #2c2c35; color: #ececf0; border: 1px solid #2f2f39;
   border-radius: 6px; padding: 7px 14px; font: inherit; cursor: pointer;
 }
-button:hover { background: #2c313c; }
-button.on { background: #3a5a8a; border-color: #4a72ab; }
+button:hover { background: #35353f; }
+button.on { background: #1a2a44; border-color: #5b9cf8; }
 button:disabled { opacity: .4; cursor: default; }
 button.sm { padding: 4px 10px; font-size: 13px; }
-.lb { color: #8b93a1; font-size: 12px; }
+.lb { color: #9e9eab; font-size: 12px; }
 .lapn {
   width: 44px; text-align: center; font-variant-numeric: tabular-nums;
-  background: #14171d; color: #e6e8ec; border: 1px solid #333b49;
+  background: #2c2c35; color: #ececf0; border: 1px solid #2f2f39;
   border-radius: 5px; padding: 4px 6px; font: inherit; font-size: 13px;
 }
-.lapn:focus { outline: none; border-color: #4a72ab; }
-.dur { color: #6b7383; font-size: 12px; font-variant-numeric: tabular-nums; }
-#status { margin-left: auto; color: #8b93a1; font-variant-numeric: tabular-nums; }
+.lapn:focus { outline: none; border-color: #5b9cf8; }
+.dur { color: #8b8b98; font-size: 12px; font-variant-numeric: tabular-nums; }
+#status { margin-left: auto; color: #9e9eab; font-variant-numeric: tabular-nums; }
 
 .layout { display: flex; gap: 14px; align-items: flex-start; }
 #stage {
@@ -61,7 +63,7 @@ button.sm { padding: 4px 10px; font-size: 13px; }
    따로 지울 필요가 없다. 기다림의 대부분은 모듈을 받는 동안이고, 그게 이 글자가 나오는 때다. */
 .loading {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  color: #6b7383; font-size: 13px; pointer-events: none;
+  color: #8b8b98; font-size: 13px; pointer-events: none;
 }
 /* 점을 CSS 로 찍는다. 진짜 진행률은 못 보여주지만(아래 참고) 멈춘 화면은 아니게 된다.
    자바스크립트가 한 줄도 안 들어가므로 비용이 0 이다 — 정작 기다리는 게 그 자바스크립트다. */
@@ -83,7 +85,7 @@ button.sm { padding: 4px 10px; font-size: 13px; }
   background: rgba(14, 17, 23, .58);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   font-size: 12.5px; line-height: 1; pointer-events: none;
-  color: #e6e8ec;
+  color: #ececf0;
 }
 .hud-board { position: relative; }
 .hud-row {
@@ -104,12 +106,12 @@ button.sm { padding: 4px 10px; font-size: 13px; }
   padding: 5px 10px; border-radius: 8px;
   background: rgba(14, 17, 23, .58);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  color: #e6e8ec; font-size: 13px; line-height: 1;
+  color: #ececf0; font-size: 13px; line-height: 1;
   font-variant-numeric: tabular-nums; letter-spacing: .02em;
   pointer-events: none; user-select: none;
 }
 .laps b { font-weight: 700; }
-.laps .sep { color: #8b93a1; margin: 0 1px; }
+.laps .sep { color: #9e9eab; margin: 0 1px; }
 
 /* ── 결과창 ──────────────────────────────────────── */
 .result {
@@ -127,7 +129,7 @@ button.sm { padding: 4px 10px; font-size: 13px; }
 .result[hidden] { display: none; }
 .result.in { opacity: 1; }
 .result-card {
-  background: #1a1d23; border: 1px solid #333b49; border-radius: 14px;
+  background: #222229; border: 1px solid #2f2f39; border-radius: 14px;
   padding: 18px 26px 20px; text-align: center; min-width: 210px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
   transform: translateY(10px) scale(.97); transition: transform .3s cubic-bezier(.2, .8, .3, 1);
@@ -144,17 +146,17 @@ button.sm { padding: 4px 10px; font-size: 13px; }
   display: flex; align-items: center; gap: 7px;
   font-size: 13px; padding: 2px 0; color: #b6bcc7;
 }
-.result .final li:first-child { color: #e6e8ec; font-weight: 600; }
-.result .final .rk { color: #6b7383; width: 14px; text-align: right; font-variant-numeric: tabular-nums; }
+.result .final li:first-child { color: #ececf0; font-weight: 600; }
+.result .final .rk { color: #8b8b98; width: 14px; text-align: right; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 560px) {
   .hud { font-size: 11.5px; padding: 6px 8px; }
 }
 
 .side { width: 250px; flex: none; }
-.panel { background: #1a1d23; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.panel { background: #222229; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
 .panel h2 {
-  font-size: 12px; color: #8b93a1; margin: 0 0 9px;
+  font-size: 12px; color: #9e9eab; margin: 0 0 9px;
   font-weight: 600; letter-spacing: .04em;
 }
 /* 순위 줄에서 공통으로 쓰는 두 가지. 색깔점과 이름은 순위판과 결과창이 같이 쓴다.
@@ -166,30 +168,30 @@ button.sm { padding: 4px 10px; font-size: 13px; }
 /* 바퀴 줄은 참가자 바로 위에 얹는다. 둘 다 「한 판을 어떻게 굴릴 것인가」라 같이 있는 게 맞다. */
 .lap {
   display: flex; align-items: center; gap: 6px;
-  margin: 0 0 11px; padding-bottom: 10px; border-bottom: 1px solid #262b34;
+  margin: 0 0 11px; padding-bottom: 10px; border-bottom: 1px solid #2f2f39;
 }
 /* 참가자 / 부스터 — 부스터는 오른쪽 숫자 칸 위에 앉는다.
    오른쪽에서 지우기 버튼(약 26px)과 간격(5px)만큼 띄우면 숫자 칸과 겹친다. */
 .hdr { display: flex; align-items: baseline; }
 .hdr h2 { flex: 1; margin-bottom: 9px; }
 .bh {
-  font-size: 12px; color: #8b93a1; font-weight: 600; letter-spacing: .04em;
+  font-size: 12px; color: #9e9eab; font-weight: 600; letter-spacing: .04em;
   padding-right: 31px;
 }
 .ent { display: flex; gap: 5px; align-items: center; margin-bottom: 5px; }
 .ent input {
-  background: #14171d; color: #e6e8ec; border: 1px solid #333b49;
+  background: #2c2c35; color: #ececf0; border: 1px solid #2f2f39;
   border-radius: 5px; padding: 4px 7px; font: inherit; font-size: 13px; min-width: 0;
 }
-.ent input:focus { outline: none; border-color: #4a72ab; }
+.ent input:focus { outline: none; border-color: #5b9cf8; }
 .ent .en { flex: 1; }
 .ent .ew { width: 46px; text-align: center; font-variant-numeric: tabular-nums; }
 .ent .del {
   padding: 3px 8px; font-size: 14px; line-height: 1;
-  background: transparent; border-color: transparent; color: #6b7383; flex: none;
+  background: transparent; border-color: transparent; color: #8b8b98; flex: none;
 }
 .ent .del:hover:not(:disabled) { background: #3a2530; color: #e08b8b; }
-.cnt { color: #6b7383; font-size: 12px; margin-left: auto; font-variant-numeric: tabular-nums; }
+.cnt { color: #8b8b98; font-size: 12px; margin-left: auto; font-variant-numeric: tabular-nums; }
 
 .about { margin-top: 26px; max-width: 720px; }
 .about h2 { font-size: 16px; margin: 22px 0 6px; }
@@ -197,10 +199,10 @@ button.sm { padding: 4px 10px; font-size: 13px; }
 .about ul { color: #b6bcc7; margin: 0 0 10px; padding-left: 20px; }
 /* 자주 묻는 질문. 질문은 h3 로 둔다 — 「자주 묻는 질문」 h2 아래에 걸려야
    목차 구조가 맞고, 질문만 굵게 처리한 <p> 는 검색엔진이 제목으로 읽지 않는다. */
-.about h3 { font-size: 14px; margin: 16px 0 4px; color: #e6e8ec; }
+.about h3 { font-size: 14px; margin: 16px 0 4px; color: #ececf0; }
 
-footer { margin-top: 32px; color: #6b7383; font-size: 13px; }
-footer a { color: #8b93a1; }
+footer { margin-top: 32px; color: #8b8b98; font-size: 13px; }
+footer a { color: #9e9eab; }
 
 @media (max-width: 900px) {
   .layout { flex-direction: column; }
@@ -212,20 +214,41 @@ footer a { color: #8b93a1; }
    도구 페이지와 같은 머리·꼬리를 쓰고 본문만 .article 로 좁힌다.
    .about 규칙(h2·p·ul)을 그대로 물려받으므로 여기서는 차이만 적는다. */
 
-.crumb { font-size: 12px; letter-spacing: .06em; color: #6b7383; margin: 0 0 4px; }
-.crumb a { color: #6b7383; text-decoration: none; }
-.crumb a:hover { color: #e6e8ec; }
+.crumb { font-size: 12px; letter-spacing: .06em; color: #8b8b98; margin: 0 0 4px; }
+.crumb a { color: #8b8b98; text-decoration: none; }
+.crumb a:hover { color: #ececf0; }
 
 .arthead h1 { font-size: 24px; line-height: 1.3; }   /* h1 은 header 안에 있다 */
 
 .article { max-width: 680px; margin-top: 22px; }
 .article h2 { margin: 26px 0 8px; }
-.article b { font-weight: 600; color: #e6e8ec; }
+.article b { font-weight: 600; color: #ececf0; }
 .article a { color: #9db4ff; }
-.article .back { margin-top: 28px; padding-top: 16px; border-top: 1px solid #262b33; }
+.article .back { margin-top: 28px; padding-top: 16px; border-top: 1px solid #2f2f39; }
 
 /* 도구 페이지 맨 아래의 글 링크. */
 .readmore { margin-top: 22px; }
 .readmore h2 { font-size: 15px; margin: 0 0 6px; }
 .readmore p { margin: 0; color: #b6bcc7; }
 .readmore a { color: #9db4ff; font-weight: 600; }
+
+/* ═════════════════════════════════════════════════════════════
+ * 토스풍 얼굴 — 2026-10-19, 헌법 §12. 테두리 대신 면 · 큰 곡률 · 굵은 제목.
+ * 맨 끝에 둬야 위의 같은 선택자를 이긴다.
+ * ═════════════════════════════════════════════════════════════ */
+body { font-size: 16px; letter-spacing: -.01em; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 30px; font-weight: 800; letter-spacing: -.03em; line-height: 1.3; }
+.tagline { font-size: 16px; }
+.home { font-size: 13px; font-weight: 700; letter-spacing: 0; }
+button { border: 1px solid transparent; border-radius: 12px; padding: 9px 16px; font-weight: 600; }
+button.on { background: #1a2a44; border-color: transparent; color: #5b9cf8; }
+button.sm { padding: 6px 12px; }
+.lapn, .ent input { border-color: transparent; border-radius: 10px; }
+#stage { border-radius: 20px; }
+.panel { border-radius: 20px; padding: 18px 20px; margin-bottom: 12px; }
+.panel h2 { font-size: 16px; color: #ececf0; font-weight: 700; letter-spacing: -.01em; }
+.result-card { border: 0; border-radius: 24px; }
+.hud, .laps { border-radius: 12px; }
+/* 「시작」이 이 화면의 주 버튼이다. 진한 칠은 이것 하나에만 — 다른 도구의 「내려받기」 자리 */
+#start { background: #5b9cf8; color: #0b1a33; font-weight: 700; padding: 9px 22px; }
+#start:hover:not(:disabled) { background: #74abfa; }
