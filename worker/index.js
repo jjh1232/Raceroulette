@@ -15,6 +15,18 @@ const CANONICAL_HOST = 'prelaps.com';
 /** prelaps.com 에서 이 도구가 사는 자리. */
 const PREFIX = '/race';
 
+// 지운 글 — 같은 언어의 도구 첫 페이지로 301 (2026-11-02).
+// 10-16 에 찍은 en·ja 글. 네이버·구글·방문 전부 0 이었다. 구글이 언젠가 이 주소를 가지러 와도
+// 404 대신 살아 있는 같은 언어 페이지로 가게 둔다. ko 판은 남아 있다.
+const GONE = new Set([
+  '/en/order',
+  '/en/who-pays',
+  '/en/lunch',
+  '/ja/order',
+  '/ja/who-pays',
+  '/ja/lunch',
+]);
+
 /** 실제로 있는 언어판. 순서가 곧 우선순위다. */
 const LANGS = ['ko', 'en', 'ja'];
 
@@ -144,6 +156,12 @@ export default {
           vary: 'Accept-Language',
         },
       });
+    }
+
+    // 지운 글 → 같은 언어의 첫 페이지. 끝 슬래시·.html 이 붙어 와도 한 번에 보낸다.
+    const gone = path.replace(/\.html$/, '').replace(/\/+$/, '');
+    if (GONE.has(gone)) {
+      return new Response(null, { status: 301, headers: { location: PREFIX + gone.slice(0, 3) + '/' + url.search } });
     }
 
     url.pathname = path;
